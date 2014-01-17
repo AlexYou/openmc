@@ -626,7 +626,7 @@ contains
 
   subroutine compute_dhat()
 
-    use constants,  only: CMFD_NOACCEL, ZERO
+    use constants,  only: CMFD_NOACCEL, ZERO, ONE
     use global,     only: cmfd, cmfd_coremap
 
     integer :: nx             ! maximum number of cells in x direction
@@ -744,7 +744,10 @@ contains
               end if
 
               ! record dhat in cmfd object
-              cmfd%dhat(l,g,i,j,k) = dhat
+              cmfd % dhat(l,g,i,j,k) = (ONE - cmfd % dampfactor)* &
+                                      cmfd % dhat(l,g,i,j,k) + &
+                                      cmfd % dampfactor*dhat
+              cmfd % dhat_old(l,g,i,j,k) = dhat
 
               ! check for dhat reset
               if (dhat_reset) cmfd%dhat(l,g,i,j,k) = ZERO

@@ -237,6 +237,9 @@ contains
        end select
     end if
 
+    ! Get damping factor (default is 0.6 from XML) 
+    cmfd % dampfactor = damp_
+
     ! Create tally objects
     call create_cmfd_tally(estimator)
 

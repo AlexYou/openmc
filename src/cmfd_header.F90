@@ -40,6 +40,8 @@ module cmfd_header
     ! Coupling coefficients and equivalence parameters
     real(8), allocatable :: dtilde(:,:,:,:,:)
     real(8), allocatable :: dhat(:,:,:,:,:)
+    real(8), allocatable :: dhat_old(:,:,:,:,:)
+    real(8) :: dampfactor = 0.6_8
 
     ! Dimensions of mesh cells ([hu,hv,hw],xloc,yloc,zloc)
     real(8), allocatable :: hxyz(:,:,:,:)
@@ -118,6 +120,7 @@ contains
     ! Allocate dtilde and dhat 
     if (.not. allocated(this % dtilde))     allocate(this % dtilde(6,ng,nx,ny,nz))
     if (.not. allocated(this % dhat))       allocate(this % dhat(6,ng,nx,ny,nz))
+    if (.not. allocated(this % dhat_old))   allocate(this % dhat_old(6,ng,nx,ny,nz))
 
     ! Allocate dimensions for each box (here for general case)
     if (.not. allocated(this % hxyz))       allocate(this % hxyz(3,nx,ny,nz))
@@ -149,6 +152,7 @@ contains
     this % diffcof       = ZERO
     this % dtilde        = ZERO
     this % dhat          = ZERO
+    this % dhat_old      = ZERO
     this % hxyz          = ZERO
     this % current       = ZERO
     this % cmfd_src      = ZERO
@@ -181,6 +185,7 @@ contains
     if (allocated(this % flux))          deallocate(this % flux)
     if (allocated(this % dtilde))        deallocate(this % dtilde)
     if (allocated(this % dhat))          deallocate(this % dhat)
+    if (allocated(this % dhat_old))      deallocate(this % dhat_old)
     if (allocated(this % hxyz))          deallocate(this % hxyz)
     if (allocated(this % coremap))       deallocate(this % coremap)
     if (allocated(this % indexmap))      deallocate(this % indexmap)
