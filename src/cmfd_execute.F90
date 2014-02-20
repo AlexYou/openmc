@@ -318,6 +318,7 @@ contains
     if (new_weights) then
 
       ! Zero out weights
+      cmfd % weightfactors_old = cmfd % weightfactors
       cmfd%weightfactors = ZERO
 
       ! Count bank sites in mesh
@@ -376,7 +377,8 @@ contains
 
       ! Reweight particle
       source_bank(i) % wgt = source_bank(i) % wgt * &
-             cmfd % weightfactors(e_bin, ijk(1), ijk(2), ijk(3))
+             ((ONE - cmfd % dampfactor)*cmfd % weightfactors(e_bin, ijk(1), ijk(2), ijk(3)) &
+            + cmfd % dampfactor*cmfd % weightfactors(e_bin, ijk(1), ijk(2), ijk(3)))
 
     end do
 

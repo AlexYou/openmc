@@ -55,6 +55,7 @@ module cmfd_header
 
     ! Weight adjustment factors 
     real(8), allocatable :: weightfactors(:,:,:,:)
+    real(8), allocatable :: weightfactors_old(:,:,:,:)
 
     ! Eigenvector/eigenvalue from cmfd run
     real(8), allocatable :: phi(:)
@@ -135,6 +136,7 @@ contains
     ! Allocate source weight modification vars
     if (.not. allocated(this % sourcecounts)) allocate(this % sourcecounts(ng,nx,ny,nz))
     if (.not. allocated(this % weightfactors)) allocate(this % weightfactors(ng,nx,ny,nz))
+    if (.not. allocated(this % weightfactors_old)) allocate(this % weightfactors(ng,nx,ny,nz))
 
     ! Allocate batchwise parameters
     if (.not. allocated(this % entropy)) allocate(this % entropy(n_batches))
@@ -159,6 +161,7 @@ contains
     this % openmc_src    = ZERO
     this % sourcecounts  = ZERO
     this % weightfactors = ONE
+    this % weightfactors_old = ONE
     this % balance       = ZERO
     this % src_cmp       = ZERO
     this % dom           = ZERO
@@ -192,6 +195,7 @@ contains
     if (allocated(this % phi))           deallocate(this % phi)
     if (allocated(this % sourcecounts))  deallocate(this % sourcecounts)
     if (allocated(this % weightfactors)) deallocate(this % weightfactors)
+    if (allocated(this % weightfactors_old)) deallocate(this % weightfactors_old)
     if (allocated(this % cmfd_src))      deallocate(this % cmfd_src)
     if (allocated(this % openmc_src))    deallocate(this % openmc_src)
     if (allocated(this % balance))       deallocate(this % balance)
